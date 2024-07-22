@@ -11,17 +11,15 @@ const Header = () => {
 
   useLayoutEffect(() => {
     const fetchUserProfile = async () => {
-      if (localStorage.getItem('accessToken') && localStorage.getItem('refreshToken')) {
-        try {
+      try {
+        if (localStorage.getItem('accessToken') && localStorage.getItem('refreshToken')) {
           const user = await getUserProfile();
-          setIsLoading(false);
           setUser(user);
-        } catch (error) {
-          console.error('유저정보 받기 실패', error);
-          setIsLoading(false);
-        } finally {
-          setIsLoading(false);
         }
+      } catch (error) {
+        console.error('유저정보 받기 실패', error);
+      } finally {
+        setIsLoading(false); // 항상 로딩 상태를 false로 설정
       }
     };
 
@@ -33,6 +31,7 @@ const Header = () => {
      * 로그아웃 인증 구현
      */
   };
+
   return (
     <header className="w-full sticky top-0 flex border-[#6E6E82] border-b-2 p-5 justify-between backdrop-blur-sm">
       <Link className="flex justify-center items-center" to="/">
