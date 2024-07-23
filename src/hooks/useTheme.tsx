@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
+import { getItem, setItem } from '../utils/localStorageUtil';
 
 const useTheme = () => {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
-    const darkMode = localStorage.getItem('dark-mode');
+    const darkMode = getItem('dark-mode');
     return darkMode === 'enabled' || (!darkMode && window.matchMedia('(prefers-color-scheme: dark)').matches);
   });
 
@@ -18,7 +19,7 @@ const useTheme = () => {
     document.body.classList.add('transition');
     setIsDarkMode((prevMode) => {
       const newMode = !prevMode;
-      localStorage.setItem('dark-mode', newMode ? 'enabled' : 'disabled');
+      setItem('dark-mode', newMode ? 'enabled' : 'disabled');
       return newMode;
     });
 
