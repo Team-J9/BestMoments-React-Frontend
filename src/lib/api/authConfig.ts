@@ -1,18 +1,25 @@
 import axios from 'axios';
 import instance from './config';
-import refreshAxios from './refreshAxios';
+import { getItem, removeItem, setItem } from '../../utils/localStorageUtil';
 
 const authAxios = axios.create({
   baseURL: instance.defaults.baseURL,
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: true,
 });
 
 authAxios.interceptors.request.use(
   (config) => {
-    const accessToken = localStorage.getItem('accessToken');
+    const accessToken = getItem('accessToken');
+    const refreshToken = getItem('refreshToken');
+
+    if (!accessToken || !refreshToken) {
+      removeItem('accessToken');
+      removeItem('refreshToken');
+      return Promise.reject(new Error('세션이 만료되었습니다. 다시 로그인해주세요.'));
+    }
+
     if (accessToken) {
       config.headers['Authorization'] = `Bearer ${accessToken}`;
     }
@@ -29,36 +36,34 @@ authAxios.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config;
-    const status = error.response ? error.response.status : null;
+
+    if (!error.response) {
+      return Promise.reject(error);
+    }
+
+    const status = error.response.status;
 
     if ((status === 401 || status === 403) && !originalRequest._retry) {
-      originalRequest._retry = true;
-      const refreshToken = localStorage.getItem('refreshToken');
+      const refreshToken = getItem('refreshToken');
+
       if (refreshToken) {
+        originalRequest._retry = true;
         try {
-          const response = await refreshAxios.patch(
-            '/auth/refresh',
-            {},
-            {
-              headers: {
-                Authorization: `Bearer ${refreshToken}`,
-              },
-            },
-          );
-          localStorage.setItem('accessToken', response.data);
+          const response = await instance.patch(`/auth/refresh/${refreshToken}`);
+          setItem('accessToken', response.data);
           authAxios.defaults.headers['Authorization'] = `Bearer ${response.data}`;
           originalRequest.headers['Authorization'] = `Bearer ${response.data}`;
           return authAxios(originalRequest);
         } catch (error) {
+          removeItem('accessToken');
+          removeItem('refreshToken');
           alert('세션이 만료되었습니다. 다시 로그인해주세요.');
-          localStorage.removeItem('accessToken');
-          localStorage.removeItem('refreshToken');
           window.location.href = '/';
         }
       } else {
+        removeItem('accessToken');
+        removeItem('refreshToken');
         alert('세션이 만료되었습니다. 다시 로그인해주세요.');
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
         window.location.href = '/';
       }
     }
