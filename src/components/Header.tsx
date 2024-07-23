@@ -1,35 +1,36 @@
 import ThemeSwitcher from './theme/Switcher';
 import { Link } from 'react-router-dom';
 import Image from './common/Image';
-import { useLayoutEffect, useState } from 'react';
-import { getUserProfile } from '../lib/api/user/api';
 import DropdownMenu from './mycontents/DropdownMenu';
+import useApi from '../hooks/useApi';
+import { getUserProfile } from '../lib/api/user/api';
+import { getItem, removeItem } from '../utils/localStorageUtil';
+import { logoutUser } from '../lib/api/auth/api';
+import { useEffect, useState } from 'react';
 
 const Header = () => {
-  const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { data, loading } = useApi(getUserProfile);
+  const [user, setUser] = useState(data);
 
-  useLayoutEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        if (localStorage.getItem('accessToken') && localStorage.getItem('refreshToken')) {
-          const user = await getUserProfile();
-          setUser(user);
-        }
-      } catch (error) {
-        console.error('유저정보 받기 실패', error);
-      } finally {
-        setIsLoading(false); // 항상 로딩 상태를 false로 설정
-      }
-    };
-
-    fetchUserProfile();
-  }, []);
+  useEffect(() => {
+    if (data) {
+      setUser(data);
+    }
+  }, [data]);
 
   const handleLogout = async () => {
-    /** todo
-     * 로그아웃 인증 구현
-     */
+    const refreshToken = getItem('refreshToken');
+    try {
+      const data = await logoutUser(refreshToken);
+      alert(data);
+
+      removeItem('accessToken');
+      removeItem('refreshToken');
+      setUser(null);
+    } catch (err: any) {
+      console.error(err.message);
+      setUser(null);
+    }
   };
 
   return (
@@ -43,25 +44,17 @@ const Header = () => {
       </Link>
       <nav className="flex justify-center items-center gap-5">
         <ThemeSwitcher />
-        {isLoading ? (
+        {loading ? (
           <div className="w-[40px] h-[40px]"></div>
         ) : user ? (
           <DropdownMenu user={user} handleLogout={handleLogout} />
         ) : (
-          <>
-            <Link
-              className="flex items-center disabled:opacity-50 disabled:hover:opacity-50 justify-center ring-none rounded-lg shadow-lg font-semibold py-2 px-4 font-dm focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 bg-blue-400 border-blue-700 disabled:border-0 disabled:bg-blue-500 disabled:text-white ring-white text-white border-b-4 transition duration-300 ease-in-out hover:bg-blue-500 hover:border-blue-800 hover:shadow-none active:shadow-inner active:bg-blue-800 active:text-gray-300 focus-visible:outline-blue-500 text-sm sm:text-base dark:hover:bg-blue-800 dark:bg-blue-700 dark:border-blue-700 dark:border-b-blue-900"
-              to="/login"
-            >
-              로그인
-            </Link>
-            <Link
-              className="flex items-center disabled:opacity-50 disabled:hover:opacity-50 justify-center ring-none rounded-lg shadow-lg font-semibold py-2 px-4 font-dm focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 bg-blue-400 border-blue-700 disabled:border-0 disabled:bg-blue-500 disabled:text-white ring-white text-white border-b-4 transition duration-300 ease-in-out hover:bg-blue-500 hover:border-blue-800 hover:shadow-none active:shadow-inner active:bg-blue-800 active:text-gray-300 focus-visible:outline-blue-500 text-sm sm:text-base dark:hover:bg-blue-800 dark:bg-blue-700 dark:border-blue-700 dark:border-b-blue-900"
-              to="/signup"
-            >
-              회원가입
-            </Link>
-          </>
+          <Link
+            className="flex items-center disabled:opacity-50 disabled:hover:opacity-50 justify-center ring-none rounded-lg shadow-lg font-semibold py-2 px-4 font-dm focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 bg-blue-400 border-blue-700 disabled:border-0 disabled:bg-blue-500 disabled:text-white ring-white text-white border-b-4 transition duration-300 ease-in-out hover:bg-blue-500 hover:border-blue-800 hover:shadow-none active:shadow-inner active:bg-blue-800 active:text-gray-300 focus-visible:outline-blue-500 text-sm sm:text-base dark:hover:bg-blue-800 dark:bg-blue-700 dark:border-blue-700 dark:border-b-blue-900"
+            to="/auth"
+          >
+            시작하기
+          </Link>
         )}
       </nav>
     </header>

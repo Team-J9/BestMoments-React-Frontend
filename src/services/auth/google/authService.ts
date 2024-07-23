@@ -24,7 +24,7 @@ const useGoogleLoginService = () => {
       localStorage.setItem('refreshToken', authResponse.refreshToken);
       window.location.href = '/';
     },
-    onError: (error) => console.log('로그인 실패', error),
+    onError: (error) => alert('구글 로그인에 실패하였습니다. 잠시 후 다시 시도해주세요.'),
     flow: 'auth-code',
     state: encodeURIComponent(generateState()),
   });

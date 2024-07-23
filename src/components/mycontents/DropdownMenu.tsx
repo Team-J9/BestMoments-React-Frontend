@@ -53,7 +53,7 @@ const DropdownMenu = ({
             <MenuItem onClick={handleMenuItemClick} href="my-video">
               내 비디오
             </MenuItem>
-            <MenuItem onClick={handleMenuItemClick} href="settings">
+            <MenuItem onClick={handleMenuItemClick} href="my-settings">
               설정
             </MenuItem>
           </ul>
