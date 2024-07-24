@@ -9,7 +9,7 @@ import MySettingsPage from './pages/mysettingspage';
 const Router = () => {
   return (
     <BrowserRouter>
-      <GoogleOAuthProvider clientId="341728937347-csf336luiofe1k01m30pl4u6h2chosej.apps.googleusercontent.com">
+      <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID || ''}>
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<MainPage />} />
