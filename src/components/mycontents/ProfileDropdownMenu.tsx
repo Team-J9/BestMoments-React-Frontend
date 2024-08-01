@@ -4,7 +4,7 @@ import MenuItem from './MenuItem';
 import LogoutButton from './LogoutButton';
 import UserInfo from './UserInfo';
 
-const DropdownMenu = ({
+const ProfileDropdownMenu = ({
   user,
   handleLogout,
 }: {
@@ -36,7 +36,7 @@ const DropdownMenu = ({
   };
 
   return (
-    <div className="relative" ref={menuRef}>
+    <div className="relative z-50" ref={menuRef}>
       <Image
         id={user.id}
         src={user.profileImageUrl}
@@ -47,7 +47,7 @@ const DropdownMenu = ({
         onClick={handleImageClick}
       />
       {isMenuOpen && (
-        <div className="absolute right-0 top-12 z-10 bg-white divide-y divide-gray-300 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+        <div className="absolute right-0 top-12 z-50 bg-white divide-y divide-gray-300 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
           <UserInfo name={user.name} />
           <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
             <MenuItem onClick={handleMenuItemClick} href="my-video">
@@ -66,4 +66,4 @@ const DropdownMenu = ({
   );
 };
 
-export default DropdownMenu;
+export default ProfileDropdownMenu;
