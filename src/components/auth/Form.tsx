@@ -1,4 +1,3 @@
-import Spinner from '../common/Spinner';
 import GoogleLoginButton from './google/LoginButton';
 import KakaoLoginButton from './kakao/LoginButton';
 
