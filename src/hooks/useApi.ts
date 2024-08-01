@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect, useCallback } from 'react';
 
-const useApi = (apiFunction: Function, args?: any[]) => {
+const useApi = (apiFunction: Function, args: any[] = []) => {
   const [data, setData] = useState<any>(null);
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
@@ -11,7 +12,7 @@ const useApi = (apiFunction: Function, args?: any[]) => {
     } else {
       return apiFunction();
     }
-  }, [apiFunction, args]);
+  }, [apiFunction, ...args]);
 
   useEffect(() => {
     const fetchData = async () => {

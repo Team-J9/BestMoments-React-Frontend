@@ -1,4 +1,5 @@
 import GoogleLoginButton from './google/LoginButton';
+import KakaoLoginButton from './kakao/LoginButton';
 
 const AuthForm = () => {
   return (
@@ -8,8 +9,9 @@ const AuthForm = () => {
           <h1 className="text-3xl text-center font-bold text-gray-900 dark:text-gray-100">시작하기</h1>
           <p className="mt-2">간편하게 가입하고 영상을 업로드 해보세요!</p>
         </header>
-        <div className="w-full flex flex-col items-center">
+        <div className="w-full flex flex-col items-center gap-4">
           <GoogleLoginButton />
+          <KakaoLoginButton />
         </div>
       </div>
     </section>

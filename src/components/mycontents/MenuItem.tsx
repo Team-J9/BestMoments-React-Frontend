@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-const MenuItem = ({ href, children, onClick }: { href: string; children: React.ReactNode; onClick: () => void }) => (
+const MenuItem = ({ href, children, onClick }: { href: string; children: React.ReactNode; onClick?: () => void }) => (
   <li>
     <Link
       to={href}
