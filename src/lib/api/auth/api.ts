@@ -1,7 +1,7 @@
 import axios from '../config';
 
 export const authenticateUser = async (provider: string, code: string) => {
-  const url = `/auth/${provider}/callback?code=${code}`;
+  const url = `/auth/${provider}/login?code=${code}`;
   const response = await axios.get(url);
   return response.data;
 };
