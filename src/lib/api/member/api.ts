@@ -1,6 +1,6 @@
 import authAxios from '../authConfig';
 
-export const getUserProfile = async () => {
+export const getMemberProfile = async () => {
   const url = '/members/my-page';
   try {
     const response = await authAxios.get(url);
