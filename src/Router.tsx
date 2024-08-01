@@ -5,6 +5,7 @@ import AuthPage from './pages/authpage';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import MyVideoPage from './pages/myvideopage';
 import MySettingsPage from './pages/mysettingspage';
+import KakaoRedirectHandler from './services/auth/kakao/redirectHandler';
 
 const Router = () => {
   return (
@@ -17,6 +18,7 @@ const Router = () => {
             <Route path="/my-video" element={<MyVideoPage />} />
             <Route path="/my-settings" element={<MySettingsPage />} />
           </Route>
+          <Route path="/auth/kakao/callback" element={<KakaoRedirectHandler />} />
         </Routes>
       </GoogleOAuthProvider>
     </BrowserRouter>
