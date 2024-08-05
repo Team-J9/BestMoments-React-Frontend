@@ -13,6 +13,7 @@ const ProfileDropdownMenu = ({
 }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const profileImageUrl = user.profileImageUrl || '/assets/image/default_user.png';
 
   const handleImageClick = () => {
     setMenuOpen((prev) => !prev);
@@ -39,7 +40,7 @@ const ProfileDropdownMenu = ({
     <div className="relative z-50" ref={menuRef}>
       <Image
         id={user.id}
-        src={user.profileImageUrl}
+        src={profileImageUrl}
         width={40}
         height={40}
         alt="userprofile"
