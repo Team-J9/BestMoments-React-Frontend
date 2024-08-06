@@ -54,6 +54,9 @@ const ProfileDropdownMenu = ({
             <MenuItem onClick={handleMenuItemClick} href="my-video">
               내 비디오
             </MenuItem>
+            <MenuItem onClick={handleMenuItemClick} href="my-trash">
+              휴지통
+            </MenuItem>
             <MenuItem onClick={handleMenuItemClick} href="my-settings">
               설정
             </MenuItem>
