@@ -2,6 +2,7 @@ import generateState from '../genetateState';
 
 const useKakaoLoginService = () => {
   const restApiKey = process.env.REACT_APP_KAKAO_REST_API_KEY;
+  // todo : 사용하는 프로토콜과 도메인을 기반으로 동적으로 url을 생성
   const redirectUri = 'http://localhost:3000/auth/kakao/callback';
 
   const handleKakaoLogin = () => {
