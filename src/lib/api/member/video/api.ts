@@ -25,16 +25,23 @@ export const getMyVideoList = async (page = 0, size = 6, sort = []) => {
 
 /**
  * 동영상 업로드
- * @param file - 업로드할 파일
- * @param title - 동영상 제목
+ * @param video - 업로드할 파일
+ * @param thu - 동영상 제목
  * @param description - 동영상 설명
  * @param videoStatus - 동영상 상태
  * @returns 업로드된 동영상 정보
  */
-export const uploadMyVideos = async (file: File, title: string, description: string, videoStatus: string) => {
+export const uploadMyVideos = async (
+  video: File,
+  thumbnail: File,
+  title: string,
+  description: string,
+  videoStatus: string,
+) => {
   const url = '/my-videos';
   const formData = new FormData();
-  formData.append('file', file);
+  formData.append('video', video);
+  formData.append('thumbnail', thumbnail);
   formData.append('title', title);
   formData.append('description', description);
   formData.append('videoStatus', videoStatus);
