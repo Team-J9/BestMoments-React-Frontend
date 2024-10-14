@@ -1,5 +1,15 @@
+import VideoHeader from '../../components/video/Header';
+import VideoList from '../../components/video/List';
+import VideoUploader from '../../components/video/Uploader';
+
 const MyVideoPage = () => {
-  return <div>내 비디오페이지</div>;
+  return (
+    <section className="max-w-6xl m-auto">
+      <VideoHeader />
+      <VideoList />
+      <VideoUploader />
+    </section>
+  );
 };
 
 export default MyVideoPage;
